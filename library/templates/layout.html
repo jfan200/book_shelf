@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Bookshelf</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='books.png') }}">
+
+    <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/main.css') }}"
+    />
+
+    <link
+            rel="bookmark"
+            type="image/x-icon"
+            href="favicon.ico"
+    />
+
+    <link
+            rel="icon"
+            href="favicon.ico"
+    />
+
+
+
+    <link href="{{ url_for('static', filename='css/templatemo-xtra-blog.css') }}" rel="stylesheet">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search.css') }}">
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+<script src="{{ url_for('static', filename='book.js') }}"></script>
+<div id="body">
+    <!-- Include navigation partial. -->
+    {% include 'navigation.html' %}
+
+    <div id="content-2">
+        <!-- Include header partial. -->
+        {% include 'header.html' %}
+
+        <div id="container">
+            <!-- Main content block to be supplied by page. -->
+            {% block content %} {% endblock %}
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

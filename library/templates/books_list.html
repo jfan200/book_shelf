@@ -1,0 +1,145 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>{{ message }}</h2>
+    <h1>{{ list_title }} {{ total_books }}</h1>
+    {% if url == "book_bp.favourite_book" %}
+        <p style="text-align: right">If you have favourite three or more books with the same tag, this tag will be
+            automatically added for you</p>
+
+    {% endif %}
+    <main class="all_book_main">
+
+
+        <div class="add_buttom navi">
+            {% for tag in tags %}
+                <a href="{{ url_for('book_bp.book_type_list', tag=tag.tag_name) }}">
+                    {{ tag.tag_name }}
+                </a>
+            {% endfor %}
+        </div>
+
+
+        <table width="100%" cellpadding="10">
+
+
+            {% for book in books %}
+                <tbody>
+                <tr class="book_list">
+                    <td width="50" valign="top">
+                        <a class="nbg" href="{{ url_for('book_bp.book_desc', book_id=book.book_id) }}"
+                           title="book.title">
+                            <img src="{{ book.image_url }}" width="75" class="">
+                        </a>
+                    </td>
+
+                    <td valign="top">
+                        <p class="ul"></p>
+                        <div class="pl2">
+                            <a href="{{ url_for('book_bp.book_desc', book_id=book.book_id) }}" class="">
+                                <h3>{{ book.title }} </h3>
+
+                            </a>
+                            <p>Book ID: {{ book.book_id }}</p>
+                            <p>Release year: {{ book.release_year }}</p>
+                            <p>Publisher: {{ book.publisher.name }}</p>
+                            <p> Authors:
+                                {% for author in book.authors %}
+                                    {{ author.full_name }},
+                                {% endfor %}
+                            </p>
+                            <p>Book tags are: {{ book.get_tag_str() }}</p>
+                        </div>
+                    </td>
+
+
+                    {% if url=="book_bp.books_list" or (url=="search_bp.search_result" and scope_text== "All Books") or url== "book_bp.book_type_list" %}
+                        <td>
+                            <div class="add_buttom">
+                                <a onclick="read_book({{ book.book_id }});"> Read the
+                                    Book </a>
+                                <a onclick="favourite_book({{ book.book_id }});"> Add to Favourite </a>
+                            </div>
+                        </td>
+                    {% endif %}
+
+                    {% if url=="book_bp.favourite_book" %}
+                        <td>
+                            <div class="add_buttom">
+                                <a href="{{ url_for('book_bp.delete_fav_book', book_id=book.book_id, page=target_page) }}">Delete
+                                    the book</a>
+                            </div>
+                        </td>
+                    {% endif %}
+
+
+                    {% if url=="book_bp.read_book" %}
+                        <td>
+                            <div class="add_buttom">
+                                <a href="{{ url_for('book_bp.delete_read_book', book_id=book.book_id, page=target_page) }}">Delete
+                                    the book</a>
+                            </div>
+                        </td>
+                    {% endif %}
+
+
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+
+        <div class="change_pages">
+            <div class="tm-prev-next-wrapper">
+                {% if prev is none %}
+                    <a href="#" class="prev-next-disable">Prev</a>
+                {% else %}
+                    <a href="{{ prev }}" class="prev-next">Prev</a>
+                {% endif %}
+                {% if next is none %}
+                    <a href="#" class="prev-next-disable">Next</a>
+                {% else %}
+                    <a href="{{ next }}" class="prev-next">Next</a>
+                {% endif %}
+            </div>
+            <div class="tm-paging-wrapper">
+                <span class="d-inline-block mr-3">Page</span>
+                <nav class="tm-paging-nav d-inline-block">
+                    <ul>
+                        {% for index in pages %}
+                            {#                            {% if list_title == "Read Books" %}#}
+                            {% if tag_str is none %}
+                                {% if target_page == index %}
+                                    <li class="tm-paging-item active">
+                                        <a href="{{ url_for(url, page=index) }}"
+                                           class="page_index_a tm-paging-link">{{ index }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="tm-paging-item">
+                                        <a href="{{ url_for(url, page=index) }}"
+                                           class="page_index_a tm-paging-link">{{ index }}</a>
+                                    </li>
+                                {% endif %}
+
+                            {% else %}
+                                {% if target_page == index %}
+                                    <li class="tm-paging-item active">
+                                        <a href="{{ url_for(url, page=index, tag=tag) }}"
+                                           class="page_index_a tm-paging-link">{{ index }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="tm-paging-item">
+                                        <a href="{{ url_for(url, page=index, tag=tag) }}"
+                                           class="page_index_a tm-paging-link">{{ index }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+
+
+
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+{% endblock %}
